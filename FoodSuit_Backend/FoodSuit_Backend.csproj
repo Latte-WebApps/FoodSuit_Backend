@@ -26,10 +26,6 @@
 
     <ItemGroup>
       <Folder Include="Employees\Application\ACL\" />
-      <Folder Include="Employees\Application\Internal\CommandServices\" />
-      <Folder Include="Employees\Application\Internal\QueryServices\" />
-      <Folder Include="Employees\Domain\Repositories\" />
-      <Folder Include="Employees\Domain\Services\" />
       <Folder Include="Employees\Infrastructure\Persistence\EFC\Repositories\" />
       <Folder Include="Employees\Interfaces\REST\Resources\" />
       <Folder Include="Employees\Interfaces\REST\Transform\" />
