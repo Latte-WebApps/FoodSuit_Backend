@@ -28,9 +28,7 @@
       <Folder Include="Employees\Application\ACL\" />
       <Folder Include="Employees\Application\Internal\CommandServices\" />
       <Folder Include="Employees\Application\Internal\QueryServices\" />
-      <Folder Include="Employees\Domain\Model\Commands\" />
       <Folder Include="Employees\Domain\Model\Queries\" />
-      <Folder Include="Employees\Domain\Model\ValueObjects\" />
       <Folder Include="Employees\Domain\Repositories\" />
       <Folder Include="Employees\Domain\Services\" />
       <Folder Include="Employees\Infrastructure\Persistence\EFC\Repositories\" />
