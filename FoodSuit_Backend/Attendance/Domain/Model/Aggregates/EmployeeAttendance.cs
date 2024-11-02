@@ -6,20 +6,36 @@ namespace FoodSuit_Backend.Attendance.Domain.Model.Aggregates;
 /// <summary>
 /// This class represents the Attendance aggregate. It is used to store the attendance record of an employee.
 /// </summary>
-public partial class Attendance
+public partial class EmployeeAttendance
 {
-    public int Id { get; private set; }
+    public int Id { get; }
     public int EmployeeId { get; private set; }
     public DateTime Date { get; private set; }
     public DateTime CheckInTime { get; private set; }
     public DateTime CheckOutTime { get; private set; }
 
-    public Attendance(RegisterAttendanceCommand command)
+    
+    public EmployeeAttendance()
+    {
+        Date = DateTime.MinValue;
+        CheckInTime = DateTime.MinValue;
+        CheckOutTime = DateTime.MinValue;
+    }
+
+    
+    public EmployeeAttendance(RegisterAttendanceCommand command)
     {
         EmployeeId = command.EmployeeId;
         Date = command.Date;
         CheckInTime = command.CheckInTime;
         CheckOutTime = command.CheckOutTime;
+    }
+
+   
+    public void UpdateAttendance(DateTime checkInTime, DateTime checkOutTime)
+    {
+        CheckInTime = checkInTime;
+        CheckOutTime = checkOutTime;
     }
 
     public void UpdateCheckOutTime(DateTime checkOutTime)

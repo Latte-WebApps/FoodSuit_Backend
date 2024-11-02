@@ -4,4 +4,4 @@
 /// GetDailyAttendanceQuery
 /// This query is used to retrieve attendance records for all employees for a specific date.
 /// </summary>
-public record GetDailyAttendanceQuery(DateTime Date);
+public record GetDailyAttendanceByDateQuery(DateTime Date);
