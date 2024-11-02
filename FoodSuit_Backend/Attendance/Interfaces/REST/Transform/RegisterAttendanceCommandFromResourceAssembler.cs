@@ -7,6 +7,6 @@ public static class RegisterAttendanceCommandFromResourceAssembler
 {
     public static RegisterAttendanceCommand ToCommandFromResource(RegisterAttendanceResource resource)
     {
-        return new RegisterAttendanceCommand(resource.EmployeeId, resource.Date, resource.CheckInTime, default);
+        return new RegisterAttendanceCommand(resource.EmployeeId, resource.Date, resource.CheckInTime, resource.CheckOutTime);
     }
 }

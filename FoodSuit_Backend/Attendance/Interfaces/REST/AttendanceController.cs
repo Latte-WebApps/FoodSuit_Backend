@@ -28,7 +28,7 @@ public class AttendanceController(
         var attendance = await attendanceCommandService.Handle(registerAttendanceCommand);
         if (attendance is null) return BadRequest();
         var attendanceResource = AttendanceResourceFromEntityAssembler.ToResourceFromEntity(attendance);
-        return CreatedAtAction(nameof(GetAttendanceByEmployeeId), new { attendanceId = attendance.Id }, attendanceResource);
+        return CreatedAtAction(nameof(GetAttendanceByEmployeeId), new { employeeId = attendance.EmployeeId }, attendanceResource);
     }
     [HttpGet("{employeeId:int}")]
     [SwaggerOperation("Get Attendance by Employee Id", "Get attendance records by employee's unique identifier.", OperationId = "GetAttendanceByEmployeeId")]

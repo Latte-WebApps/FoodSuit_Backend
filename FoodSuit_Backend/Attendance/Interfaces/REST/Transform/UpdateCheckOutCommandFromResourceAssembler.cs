@@ -7,6 +7,6 @@ public static class UpdateCheckOutCommandFromResourceAssembler
 {
     public static UpdateCheckOutCommand ToCommandFromResource(int id, UpdateCheckOutResource resource)
     {
-        return new UpdateCheckOutCommand(id, resource.CheckOutTime);
+        return new UpdateCheckOutCommand(resource.EmployeeId, resource.CheckOutTime);
     }
 }
