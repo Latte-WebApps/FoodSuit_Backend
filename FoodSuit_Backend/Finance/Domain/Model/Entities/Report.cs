@@ -8,6 +8,7 @@ public class Report
     public string Description { get; set; }
     public EReportType Type { get; private set; }
     public string Date { get; set;  }
+    public int Amount { get; set; }
     public int OrdersId { get; set; }
     public int ProductsId { get; set; }
     
@@ -16,6 +17,7 @@ public class Report
         Description = string.Empty;
         Type = type;
         Date = string.Empty;
+        Amount = 0;
         OrdersId = 0;
         ProductsId = 0;
     }
