@@ -2,7 +2,6 @@
 using FoodSuit_Backend.Employees.Domain.Model.Queries;
 using FoodSuit_Backend.Employees.Domain.Repositories;
 using FoodSuit_Backend.Employees.Domain.Services;
-using FoodSuit_Backend.Shared.Domain.Repositories;
 
 namespace FoodSuit_Backend.Employees.Application.Internal.QueryServices;
 
