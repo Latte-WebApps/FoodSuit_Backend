@@ -4,4 +4,4 @@
 /// UpdateCheckOutCommand
 /// This command is used to update the check-out time of an existing attendance record.
 /// </summary>
-public record UpdateCheckOutCommand(int AttendanceId, DateTime CheckOutTime);
+public record UpdateCheckOutCommand(int EmployeeId, DateTime CheckOutTime);

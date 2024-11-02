@@ -37,6 +37,11 @@ public partial class EmployeeAttendance
         CheckInTime = checkInTime;
         CheckOutTime = checkOutTime;
     }
+    public EmployeeAttendance(UpdateCheckOutCommand command)
+    {
+        EmployeeId = command.EmployeeId;
+        CheckOutTime = command.CheckOutTime;
+    }
 
     public void UpdateCheckOutTime(DateTime checkOutTime)
     {
