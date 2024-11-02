@@ -18,4 +18,10 @@ public class UnitOfWork(AppDbContext context) : IUnitOfWork
         _context.Set<TEntity>().Update(entity);
         await CompleteAsync();
     }
+
+    public async Task RemoveAsync<TEntity>(TEntity entity) where TEntity : class
+    {
+        _context.Set<TEntity>().Remove(entity);
+        await Task.CompletedTask;
+    }
 }

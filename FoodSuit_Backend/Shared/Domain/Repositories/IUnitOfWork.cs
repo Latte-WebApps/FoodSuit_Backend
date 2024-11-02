@@ -4,4 +4,5 @@ public interface IUnitOfWork
 {
     Task CompleteAsync();
     Task UpdateAsync<TEntity>(TEntity entity) where TEntity : class;
+    Task RemoveAsync<TEntity>(TEntity entity) where TEntity : class;
 }
