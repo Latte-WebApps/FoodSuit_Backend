@@ -46,4 +46,47 @@ public class EmployeeController(
         var employeeResource = EmployeeResourceFromEntityAssembler.ToResourceFromEntity(employee);
         return CreatedAtAction(nameof(GetEmployeeById), new { profileId = employee.Id }, employeeResource);
     }
+
+    [HttpPut("{id:int}")]
+    public async Task<IActionResult> UpdateEmployee(int id, UpdateEmployeeResource resource)
+    {
+        if (id <= 0 || resource is null) 
+            return BadRequest("Invalid Employee ID");
+
+        try
+        {
+            var updateEmployeeCommand = UpdateEmployeeCommandFromResourceAssembler.ToCommandFromResource(resource);
+            var employee = await employeeCommandService.Handle(id, updateEmployeeCommand);
+            if (employee == null)
+                return NotFound($"Employee not found: {id}");
+
+            var employeeResource = EmployeeResourceFromEntityAssembler.ToResourceFromEntity(employee);
+            return Ok(employeeResource);
+        }
+        
+        catch (Exception ex)
+        {
+            return StatusCode(500, $"An error occurred: {ex.Message}");
+        }
+    }
+
+    [HttpDelete("{id:int}")]
+    public async Task<IActionResult> DeleteEmployee(int id)
+    {
+        try
+        {
+            var deleteEmployeeCommand = new DeleteEmployeeCommand(id);
+            var employeeDeleted = await employeeCommandService.Handle(deleteEmployeeCommand);
+            
+            if (employeeDeleted is null)
+                return NotFound($"Employee with id {id} not found.");
+
+            return Ok("Employee deleted successfully!");
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+    }
 }
