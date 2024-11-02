@@ -23,15 +23,6 @@
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.8.1"/>
         <PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="6.8.1"/>
     </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="Attendance\Application\ACL\" />
-      <Folder Include="Attendance\Application\Internal\CommandServices\" />
-      <Folder Include="Attendance\Application\Internal\QueryServices\" />
-      <Folder Include="Attendance\Infrastructure\Persistence\EFC\Repositories\" />
-      <Folder Include="Attendance\Interfaces\ACL\" />
-      <Folder Include="Attendance\Interfaces\REST\Resources\" />
-      <Folder Include="Attendance\Interfaces\REST\Transform\" />
-    </ItemGroup>
+    
 
 </Project>
