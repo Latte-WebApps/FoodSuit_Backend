@@ -9,6 +9,6 @@ public static class CreateReportCommandFromResourceAssembler
     public static CreateReportCommand ToCommandFromResource(CreateReportResource resource)
     {
         var parsedReportType = Enum.Parse<EReportType>(resource.ReportType, true);
-        return new CreateReportCommand(resource.Description, parsedReportType);
+        return new CreateReportCommand(resource.Description, parsedReportType, resource.Date, resource.Amount, resource.OrdersId, resource.ProductsId);
     }
 }
