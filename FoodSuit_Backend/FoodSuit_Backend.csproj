@@ -24,9 +24,4 @@
         <PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="6.8.1"/>
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Employees\Interfaces\REST\Resources\" />
-      <Folder Include="Employees\Interfaces\REST\Transform\" />
-    </ItemGroup>
-
 </Project>
