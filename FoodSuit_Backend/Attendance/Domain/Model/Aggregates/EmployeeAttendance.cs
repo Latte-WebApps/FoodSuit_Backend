@@ -14,7 +14,7 @@ public partial class EmployeeAttendance
     public DateTime CheckInTime { get; private set; }
     public DateTime CheckOutTime { get; private set; }
 
-    
+    // Constructor sin parámetros para flexibilidad
     public EmployeeAttendance()
     {
         Date = DateTime.MinValue;
@@ -22,7 +22,7 @@ public partial class EmployeeAttendance
         CheckOutTime = DateTime.MinValue;
     }
 
-    
+    // Constructor con comando para registro inicial de asistencia
     public EmployeeAttendance(RegisterAttendanceCommand command)
     {
         EmployeeId = command.EmployeeId;
@@ -31,7 +31,7 @@ public partial class EmployeeAttendance
         CheckOutTime = command.CheckOutTime;
     }
 
-   
+    // Método de actualización para modificar el registro de asistencia
     public void UpdateAttendance(DateTime checkInTime, DateTime checkOutTime)
     {
         CheckInTime = checkInTime;
