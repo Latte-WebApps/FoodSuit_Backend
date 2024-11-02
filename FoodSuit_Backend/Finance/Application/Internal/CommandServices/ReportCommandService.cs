@@ -14,7 +14,10 @@ public class ReportCommandService (IReportRepository reportRepository, IUnitOfWo
     {
         var report = new Report(command.ReportType)
         {
-            Description = command.Description
+            Description = command.Description,
+            Date = command.Date,
+            OrdersId = command.OrdersId,
+            ProductsId = command.ProductsId
         };
         await reportRepository.AddAsync(report);
         await unitOfWork.CompleteAsync();
