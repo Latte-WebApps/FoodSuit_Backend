@@ -44,7 +44,7 @@ else if (builder.Environment.IsProduction())
 // Shared Bounded Context Dependency Injection Configuration
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
-// News Bounded Context Dependency Injection Configuration
+// Inventory Bounded Context Dependency Injection Configuration
 
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<IProductCommandService, ProductCommandService>();

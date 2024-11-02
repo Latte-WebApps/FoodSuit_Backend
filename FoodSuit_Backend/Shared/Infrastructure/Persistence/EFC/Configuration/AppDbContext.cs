@@ -18,6 +18,8 @@ public class AppDbContext(DbContextOptions options) : DbContext(options)
     {
         base.OnModelCreating(builder);
 
+        
+        // Product Entity Configuration 
         builder.Entity<Product>().HasKey(f => f.Id);
         builder.Entity<Product>().Property(f => f.Id)
             .IsRequired().ValueGeneratedOnAdd();
