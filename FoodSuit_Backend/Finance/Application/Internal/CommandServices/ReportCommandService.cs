@@ -16,6 +16,7 @@ public class ReportCommandService (IReportRepository reportRepository, IUnitOfWo
         {
             Description = command.Description,
             Date = command.Date,
+            Amount = command.Amount,
             OrdersId = command.OrdersId,
             ProductsId = command.ProductsId
         };
