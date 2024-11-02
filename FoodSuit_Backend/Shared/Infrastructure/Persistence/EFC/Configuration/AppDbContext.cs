@@ -17,7 +17,7 @@ public class AppDbContext(DbContextOptions options) : DbContext(options)
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
-
+        
         builder.Entity<EmployeeAttendance>().HasKey(f => f.Id);
         builder.Entity<EmployeeAttendance>().Property(f => f.Id)
             .IsRequired().ValueGeneratedOnAdd();
@@ -28,10 +28,10 @@ public class AppDbContext(DbContextOptions options) : DbContext(options)
         builder.Entity<EmployeeAttendance>().Property(f => f.CheckInTime)
             .IsRequired();
         builder.Entity<EmployeeAttendance>().Property(f => f.CheckOutTime);
-
-
+        
+        
         builder.UseSnakeCaseNamingConvention();
 
     }
-
+    
 }
