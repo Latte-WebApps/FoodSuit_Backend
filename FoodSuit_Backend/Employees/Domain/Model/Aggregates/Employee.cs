@@ -34,4 +34,14 @@ public partial  class Employee
         EntryTime = new EntryTime(command.EntryHour, command.EntryMinute);
         ExitTime = new ExitTime(command.ExitHour, command.ExitMinute);  
     }
+    
+    public void UpdateEmployee(string firstName, string lastName, int entryHour, int entryMinute, int exitHour, int exitMinute)
+    {
+        Name = new EmployeeName(firstName, lastName);
+        EntryTime = new EntryTime(entryHour, entryMinute);
+        ExitTime = new ExitTime(exitHour, exitMinute);
+    }
+    
+    
+    
 }
