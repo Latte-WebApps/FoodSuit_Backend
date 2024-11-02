@@ -6,7 +6,6 @@ namespace FoodSuit_Backend.Inventory.Domain.Repositories;
 
 public interface IProductRepository: IBaseRepository<Product>
 {
-    Task<Product?> FindByIdAsync(int id);
     Task<IEnumerable<Product>?> FindByNameAsync(string name);
     Task UpdateAsync(Product product );
     Task<IEnumerable<Product>?> FindAllAsync();
