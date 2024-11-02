@@ -1,3 +1,10 @@
+using FoodSuit_Backend.Inventory.Application.Internal.CommandServices;
+using FoodSuit_Backend.Inventory.Application.Internal.QueryServices;
+using FoodSuit_Backend.Inventory.Domain.exceptions;
+using FoodSuit_Backend.Inventory.Domain.Repositories;
+using FoodSuit_Backend.Inventory.Domain.Services;
+using FoodSuit_Backend.Inventory.Infrastructure.Persistence.EFC.Repositories;
+
 using FoodSuit_Backend.Finance.Application.Internal.CommandServices;
 using FoodSuit_Backend.Finance.Application.Internal.QueryServices;
 using FoodSuit_Backend.Finance.Domain.Repositories;
@@ -9,9 +16,10 @@ using FoodSuit_Backend.Shared.Infrastructure.Persistence.EFC.Configuration;
 using FoodSuit_Backend.Shared.Infrastructure.Persistence.EFC.Repositories;
 using Microsoft.EntityFrameworkCore;
 
-var builder = WebApplication.CreateBuilder(args);
 
+var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
+
 
 // Apply Route Naming Convention
 builder.Services.AddRouting(options => options.LowercaseUrls = true);
@@ -21,11 +29,12 @@ builder.Services.AddControllers(options => options.Conventions.Add(new KebabCase
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options => options.EnableAnnotations());
 
+
 // Add Database Connection
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
 if (connectionString is null)
-    throw new Exception("Connection string is null");
+    throw new Exception("Database connection string is not set.");
 
 builder.Services.AddDbContext<AppDbContext>(options =>
 {
@@ -38,15 +47,29 @@ builder.Services.AddDbContext<AppDbContext>(options =>
         options.UseMySQL(connectionString);
 });
 
+// Configure Dependency Injection
+
+// Shared Bounded Context Dependency Injection Configuration
+
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+// Finance Bounded Context Dependency Injection Configuration
 
 builder.Services.AddScoped<IReportRepository, ReportRepository>();
 builder.Services.AddScoped<IReportCommandService, ReportCommandService>();
 builder.Services.AddScoped<IReportQueryService, ReportQueryService>();
 
+// Inventory Bounded Context Dependency Injection Configuration
+
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
+builder.Services.AddScoped<IProductCommandService, ProductCommandService>();
+builder.Services.AddScoped<IProductQueryService, ProductQueryService>();
+
+
 var app = builder.Build();
 
 // Verify Database Objects are Created
+
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
