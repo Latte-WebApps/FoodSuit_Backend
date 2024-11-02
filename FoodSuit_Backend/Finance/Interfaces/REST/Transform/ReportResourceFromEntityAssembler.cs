@@ -7,6 +7,6 @@ public static class ReportResourceFromEntityAssembler
 {
     public static ReportResource ToResourceFromEntity(Report entity)
     {
-        return new ReportResource(entity.Id, entity.Description, entity.Type.ToString());
+        return new ReportResource(entity.Id, entity.Description, entity.Type.ToString(), entity.Date, entity.Amount, entity.OrdersId, entity.ProductsId);
     }
 }
