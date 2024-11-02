@@ -8,25 +8,23 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace FoodSuit_Backend.Orders.Interfaces.REST;
 
-
 [ApiController]
 [Route("api/v1/[controller]")]
 [Produces(MediaTypeNames.Application.Json)]
 public class OrdersController(IOrderCommandService orderCommandService,
     IOrderQueryService orderQueryService) : ControllerBase
 {
-    
     [HttpPost]
     public async Task<ActionResult> CreateOrder([FromBody] CreateOrderResource resource)
     {
         var createOrderCommand = CreateOrderCommandFromResourceAssembler.ToCommandFromResource(resource);
         var result = await orderCommandService.Handle(createOrderCommand);
         if (result is null) return BadRequest();
-        return CreatedAtAction(nameof(GetOrderById), new { id = result.Id },
+        return CreatedAtAction(nameof(GetOrderById), new { orderId = result.Id },
             OrderResourceFromEntityAssembler.ToResourceFromEntity(result));
     }
 
-    [HttpGet("{orderId:id}")]
+    [HttpGet("{orderId}")]
     public async Task<ActionResult> GetOrderById(int orderId)
     {
         var getOrderByIdQuery = new GetOrderByIdQuery(orderId);
@@ -34,10 +32,9 @@ public class OrdersController(IOrderCommandService orderCommandService,
         if (result is null) return NotFound();
         var orderResource = OrderResourceFromEntityAssembler.ToResourceFromEntity(result);
         return Ok(orderResource);
-        
     }
-    
-    [HttpDelete("{orderId:id}")]
+
+    [HttpDelete("{orderId}")]
     public async Task<ActionResult> DeleteOrderById(int orderId)
     {
         var deleteOrderCommand = new DeleteOrderCommand(orderId);
