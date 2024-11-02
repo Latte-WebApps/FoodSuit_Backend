@@ -1,3 +1,8 @@
+using FoodSuit_Backend.Employees.Application.Internal.CommandServices;
+using FoodSuit_Backend.Employees.Application.Internal.QueryServices;
+using FoodSuit_Backend.Employees.Domain.Repositories;
+using FoodSuit_Backend.Employees.Domain.Services;
+using FoodSuit_Backend.Employees.Infrastructure.Persistence.EFC.Repositories;
 using FoodSuit_Backend.Inventory.Application.Internal.CommandServices;
 using FoodSuit_Backend.Inventory.Application.Internal.QueryServices;
 using FoodSuit_Backend.Inventory.Domain.exceptions;
@@ -65,6 +70,11 @@ builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<IProductCommandService, ProductCommandService>();
 builder.Services.AddScoped<IProductQueryService, ProductQueryService>();
 
+//Employees Bounded Context Dependency Injection Configuration
+
+builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
+builder.Services.AddScoped<IEmployeeCommandService, EmployeeCommandService>();
+builder.Services.AddScoped<IEmployeeQueryService, EmployeeQueryService>();
 
 var app = builder.Build();
 
