@@ -6,5 +6,5 @@ namespace FoodSuit_Backend.Employees.Domain.Repositories;
 
 public interface IEmployeeRepository :IBaseRepository<Employee>
 {
-    Task<Employee> GetByUsernameAsync(EmployeeName name);
+    Task<Employee?> GetByUsernameAsync(EmployeeName name);
 }

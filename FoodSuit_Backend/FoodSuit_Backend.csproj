@@ -25,7 +25,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Employees\Infrastructure\Persistence\EFC\Repositories\" />
       <Folder Include="Employees\Interfaces\REST\Resources\" />
       <Folder Include="Employees\Interfaces\REST\Transform\" />
     </ItemGroup>
