@@ -7,7 +7,9 @@ using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace FoodSuit_Backend.Finance.Interfaces.REST;
-
+/// <summary>
+/// Controller for managing reports.
+/// </summary>
 [ApiController]
 [Route("api/v1/[controller]")]
 [Produces(MediaTypeNames.Application.Json)]
@@ -17,6 +19,11 @@ public class ReportsController (
     IReportQueryService reportQueryService
     ) : ControllerBase
 {
+    /// <summary>
+    /// Creates a new report.
+    /// </summary>
+    /// <param name="resource">The resource containing the report details.</param>
+    /// <returns>A newly created report.</returns>
     [HttpPost]
     [SwaggerOperation(
         Summary = "Create a new report",
@@ -28,11 +35,16 @@ public class ReportsController (
         var createReportCommand = CreateReportCommandFromResourceAssembler.ToCommandFromResource(resource);
         var report = await reportCommandService.Handle(createReportCommand);
         if (report is null) return BadRequest();
-        
+
         var reportResource = ReportResourceFromEntityAssembler.ToResourceFromEntity(report);
         return CreatedAtAction(nameof(GetReportById), new { reportId = report.Id }, reportResource);
     }
 
+    /// <summary>
+    /// Gets a report by its ID.
+    /// </summary>
+    /// <param name="reportId">The ID of the report to retrieve.</param>
+    /// <returns>The report with the specified ID.</returns>
     [HttpGet("{reportId:int}")]
     [SwaggerOperation(
         Summary = "Get report by id",
@@ -44,11 +56,15 @@ public class ReportsController (
         var getReportByIdQuery = new GetReportByIdQuery(reportId);
         var report = await reportQueryService.Handle(getReportByIdQuery);
         if (report is null) return NotFound();
-        
+
         var reportResource = ReportResourceFromEntityAssembler.ToResourceFromEntity(report);
         return Ok(reportResource);
     }
 
+    /// <summary>
+    /// Gets all reports.
+    /// </summary>
+    /// <returns>A list of all reports.</returns>
     [HttpGet]
     [SwaggerOperation(
         Summary = "Get all reports",
