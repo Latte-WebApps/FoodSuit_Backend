@@ -28,6 +28,7 @@ public class ReportsController (
         var createReportCommand = CreateReportCommandFromResourceAssembler.ToCommandFromResource(resource);
         var report = await reportCommandService.Handle(createReportCommand);
         if (report is null) return BadRequest();
+        
         var reportResource = ReportResourceFromEntityAssembler.ToResourceFromEntity(report);
         return CreatedAtAction(nameof(GetReportById), new { reportId = report.Id }, reportResource);
     }
@@ -43,6 +44,7 @@ public class ReportsController (
         var getReportByIdQuery = new GetReportByIdQuery(reportId);
         var report = await reportQueryService.Handle(getReportByIdQuery);
         if (report is null) return NotFound();
+        
         var reportResource = ReportResourceFromEntityAssembler.ToResourceFromEntity(report);
         return Ok(reportResource);
     }
