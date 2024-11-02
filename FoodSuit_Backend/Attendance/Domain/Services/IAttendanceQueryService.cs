@@ -6,6 +6,8 @@ namespace FoodSuit_Backend.Attendance.Domain.Services;
 public interface IAttendanceQueryService
 {
     Task<IEnumerable<EmployeeAttendance>> Handle(GetAttendanceByEmployeeIdQuery query);
+    Task<IEnumerable<EmployeeAttendance>> Handle(GetAllAttendancesQuery query);
+
     Task<IEnumerable<EmployeeAttendance>> Handle(GetDailyAttendanceByDateQuery query);
     Task<double> Handle(GetTotalHoursWorkedByEmployeeIdQuery query);
 }

@@ -33,4 +33,9 @@ public class AttendanceRepository(AppDbContext context) : BaseRepository<Employe
         return await Context.Set<EmployeeAttendance>()
             .FirstOrDefaultAsync(a => a.Id == id);
     }
+
+    public async Task<IEnumerable<EmployeeAttendance>?> FindAllAsync()
+    {
+        return await Context.Set<EmployeeAttendance>().ToListAsync();
+    }
 }
