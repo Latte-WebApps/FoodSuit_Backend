@@ -1,9 +1,20 @@
-
 using FoodSuit_Backend.Employees.Application.Internal.CommandServices;
 using FoodSuit_Backend.Employees.Application.Internal.QueryServices;
 using FoodSuit_Backend.Employees.Domain.Repositories;
 using FoodSuit_Backend.Employees.Domain.Services;
 using FoodSuit_Backend.Employees.Infrastructure.Persistence.EFC.Repositories;
+using FoodSuit_Backend.Inventory.Application.Internal.CommandServices;
+using FoodSuit_Backend.Inventory.Application.Internal.QueryServices;
+using FoodSuit_Backend.Inventory.Domain.exceptions;
+using FoodSuit_Backend.Inventory.Domain.Repositories;
+using FoodSuit_Backend.Inventory.Domain.Services;
+using FoodSuit_Backend.Inventory.Infrastructure.Persistence.EFC.Repositories;
+
+using FoodSuit_Backend.Finance.Application.Internal.CommandServices;
+using FoodSuit_Backend.Finance.Application.Internal.QueryServices;
+using FoodSuit_Backend.Finance.Domain.Repositories;
+using FoodSuit_Backend.Finance.Domain.Services;
+using FoodSuit_Backend.Finance.Infrastructure.Persistence.EFC.Repositories;
 using FoodSuit_Backend.Shared.Domain.Repositories;
 using FoodSuit_Backend.Shared.Infrastructure.Interfaces.ASP.Configuration;
 using FoodSuit_Backend.Shared.Infrastructure.Persistence.EFC.Configuration;
@@ -47,7 +58,19 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
-// Employees Bounded Context Dependency Injection Configuration
+// Finance Bounded Context Dependency Injection Configuration
+
+builder.Services.AddScoped<IReportRepository, ReportRepository>();
+builder.Services.AddScoped<IReportCommandService, ReportCommandService>();
+builder.Services.AddScoped<IReportQueryService, ReportQueryService>();
+
+// Inventory Bounded Context Dependency Injection Configuration
+
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
+builder.Services.AddScoped<IProductCommandService, ProductCommandService>();
+builder.Services.AddScoped<IProductQueryService, ProductQueryService>();
+
+//Employees Bounded Context Dependency Injection Configuration
 
 builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
 builder.Services.AddScoped<IEmployeeCommandService, EmployeeCommandService>();
