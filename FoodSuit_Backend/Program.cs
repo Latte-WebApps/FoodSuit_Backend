@@ -1,3 +1,15 @@
+using FoodSuit_Backend.Dishes.Application.Internal.CommandServices;
+using FoodSuit_Backend.Dishes.Application.Internal.QueryServices;
+using FoodSuit_Backend.Dishes.Domain.Repositories;
+using FoodSuit_Backend.Dishes.Domain.Services;
+using FoodSuit_Backend.Dishes.Infrastructure.Persistence.EFC.Repositories;
+
+using FoodSuit_Backend.Orders.Application.Internal.CommandServices;
+using FoodSuit_Backend.Orders.Application.Internal.QueryServices;
+using FoodSuit_Backend.Orders.Domain.Repositories;
+using FoodSuit_Backend.Orders.Domain.Services;
+using FoodSuit_Backend.Orders.Infrastructure.Persistence.EFC.Repositories;
+
 using FoodSuit_Backend.Employees.Application.Internal.CommandServices;
 using FoodSuit_Backend.Employees.Application.Internal.QueryServices;
 using FoodSuit_Backend.Employees.Domain.Repositories;
@@ -19,12 +31,18 @@ using FoodSuit_Backend.Shared.Domain.Repositories;
 using FoodSuit_Backend.Shared.Infrastructure.Interfaces.ASP.Configuration;
 using FoodSuit_Backend.Shared.Infrastructure.Persistence.EFC.Configuration;
 using FoodSuit_Backend.Shared.Infrastructure.Persistence.EFC.Repositories;
+using Microsoft.AspNetCore.Routing.Constraints;
 using Microsoft.EntityFrameworkCore;
+using Mysqlx.Crud;
 
 
 var builder = WebApplication.CreateBuilder(args);
-// Add services to the container.
 
+// Configuración de restricciones de tipo en rutas
+builder.Services.Configure<RouteOptions>(options =>
+{
+    options.ConstraintMap.Add("id", typeof(IntRouteConstraint)); // Solo agrega esta línea, sin duplicar "int"
+});
 
 // Apply Route Naming Convention
 builder.Services.AddRouting(options => options.LowercaseUrls = true);
@@ -57,6 +75,17 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 // Shared Bounded Context Dependency Injection Configuration
 
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+// Dishes Bounded Context Dependency Injection Configuration
+
+builder.Services.AddScoped<IDishRepository, DishRepository>();
+builder.Services.AddScoped<IDishCommandService, DishCommandService>();
+builder.Services.AddScoped<IDishQueryService, DishQueryService>();
+
+// Orders Bounded Context Dependency Injection Configuration
+builder.Services.AddScoped<IOrderRepository, OrderRepository>();
+builder.Services.AddScoped<IOrderCommandService, OrderCommandService>();
+builder.Services.AddScoped<IOrderQueryService, OrderQueryService>();
 
 // Finance Bounded Context Dependency Injection Configuration
 

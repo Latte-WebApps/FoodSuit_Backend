@@ -1,4 +1,7 @@
 using EntityFrameworkCore.CreatedUpdatedDate.Extensions;
+using FoodSuit_Backend.Dishes.Domain.Model.Aggregates;
+using FoodSuit_Backend.Orders.Domain.Model.Aggregates;
+using EntityFrameworkCore.CreatedUpdatedDate.Extensions;
 using FoodSuit_Backend.Inventory.Domain.Model.Aggregates;
 using FoodSuit_Backend.Finance.Domain.Model.Entities;
 using FoodSuit_Backend.Shared.Infrastructure.Persistence.EFC.Configuration.Extensions;
@@ -13,14 +16,31 @@ public class AppDbContext(DbContextOptions options) : DbContext(options)
         builder.AddCreatedUpdatedInterceptor();
         base.OnConfiguring(builder);
     }
-
-
+    
+    
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
 
+
+        //Orders Context
         
-        // Product Entity Configuration 
+        builder.Entity<Dish>().ToTable("Dishes");
+        builder.Entity<Dish>().HasKey(d => d.Id);
+        builder.Entity<Dish>().Property(d => d.Id).IsRequired().ValueGeneratedOnAdd();
+        builder.Entity<Dish>().Property(d => d.Name).IsRequired();
+        builder.Entity<Dish>().Property(d=>d.Category).IsRequired();
+        builder.Entity<Dish>().Property(d=>d.Price).IsRequired();
+        
+        
+        builder.Entity<Order>().ToTable("Orders");
+        builder.Entity<Order>().HasKey(o => o.Id);
+        builder.Entity<Order>().Property(o => o.Id).IsRequired().ValueGeneratedOnAdd();
+        builder.Entity<Order>().Property(o=>o.Status).IsRequired();
+        builder.Entity<Order>().Property(o=>o.Date).IsRequired();
+        builder.Entity<Order>().Property(o=>o.Table).IsRequired();
+        
+        // Product Context
         builder.Entity<Product>().HasKey(f => f.Id);
         builder.Entity<Product>().Property(f => f.Id)
             .IsRequired().ValueGeneratedOnAdd();
