@@ -1,9 +1,12 @@
 ﻿using System.Net.Mime;
+using FoodSuit_Backend.Attendance.Application.Internal.QueryServices;
 using FoodSuit_Backend.Attendance.Domain.Model.Commands;
 using FoodSuit_Backend.Attendance.Domain.Model.Queries;
 using FoodSuit_Backend.Attendance.Domain.Services;
 using FoodSuit_Backend.Attendance.Interfaces.REST.Resources;
 using FoodSuit_Backend.Attendance.Interfaces.REST.Transform;
+using FoodSuit_Backend.Employees.Domain.Model.Queries;
+using FoodSuit_Backend.Employees.Interfaces.REST.Resources;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 
@@ -29,6 +32,7 @@ public class AttendanceController(
         if (attendance is null) return BadRequest();
         var attendanceResource = AttendanceResourceFromEntityAssembler.ToResourceFromEntity(attendance);
         return CreatedAtAction(nameof(GetAttendanceByEmployeeId), new { attendanceId = attendance.Id }, attendanceResource);
+
     }
     [HttpGet("{employeeId:int}")]
     [SwaggerOperation("Get Attendance by Employee Id", "Get attendance records by employee's unique identifier.", OperationId = "GetAttendanceByEmployeeId")]
@@ -45,7 +49,16 @@ public class AttendanceController(
         return Ok(attendanceResources);
     }
 
-
+    [HttpGet]
+    public async Task<IActionResult> GetAllAttendances()
+    {
+        var getAllAttendancesQuery = new GetAllAttendancesQuery();
+        var attendances = await attendanceQueryService.Handle(getAllAttendancesQuery);
+        var attendanceResources = attendances.Select(AttendanceResourceFromEntityAssembler.ToResourceFromEntity);
+        return Ok(attendanceResources);
+    }
+    
+    
     
     [HttpPut("{id:int}/checkout")]
     [SwaggerOperation("Update Check-Out", "Update the check-out time for an attendance entry.", OperationId = "UpdateCheckOut")]

@@ -11,4 +11,5 @@ public interface IAttendanceRepository : IBaseRepository<EmployeeAttendance>
     Task<IEnumerable<EmployeeAttendance>> FindByEmployeeIdAsync(int employeeId, DateTime? startDate = null, DateTime? endDate = null);
     Task<IEnumerable<EmployeeAttendance>> FindByDateAsync(DateTime date);
     Task<EmployeeAttendance?> GetByIdAsync(int id);
+    Task<IEnumerable<EmployeeAttendance>?> FindAllAsync();
 }
