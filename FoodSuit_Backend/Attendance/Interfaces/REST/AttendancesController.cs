@@ -15,12 +15,12 @@ namespace FoodSuit_Backend.Attendance.Interfaces.REST;
 [Produces(MediaTypeNames.Application.Json)]
 [SwaggerTag("Available Attendance Endpoints.")]
 
-public class AttendanceController(
+public class AttendancesController(
     IAttendanceCommandService attendanceCommandService,
     IAttendanceQueryService attendanceQueryService) : ControllerBase
 {
     [HttpPost]
-    [SwaggerOperation("Register Attendance", "Register a new attendance entry.", OperationId = "RegisterAttendance")]
+    [SwaggerOperation("Register an attendance", "Register a new attendance entry.", OperationId = "RegisterAttendance")]
     [SwaggerResponse(201, "The Attendance was registered successfully.", typeof(AttendanceResource))]
     [SwaggerResponse(400, "The Attendance registration failed.")]
     public async Task<IActionResult> RegisterAttendance(RegisterAttendanceResource resource)
@@ -61,8 +61,8 @@ public class AttendanceController(
         return Ok(attendanceResources);
     }
 
-    [HttpPut("{id:int}/update-checkout")]
-    [SwaggerOperation("Update Check-Out", "Update the check-out time for an attendance entry.", OperationId = "UpdateCheckOut")]
+    [HttpPut("{id:int}")]
+    [SwaggerOperation("Update an attendance by ID", "Update the check-out time for an attendance entry.", OperationId = "UpdateCheckOut")]
     [SwaggerResponse(200, "The check-out time was updated successfully.", typeof(AttendanceResource))]
     [SwaggerResponse(404, "The Attendance entry was not found.")]
     public async Task<IActionResult> UpdateCheckOut(int id, UpdateCheckOutResource resource)
@@ -78,7 +78,7 @@ public class AttendanceController(
     }
 
     [HttpDelete("{id:int}")]
-    [SwaggerOperation("Delete Attendance", "Delete an attendance entry by its ID.", OperationId = "DeleteAttendance")]
+    [SwaggerOperation("Delete an attendance by ID", "Delete an attendance entry by its ID.", OperationId = "DeleteAttendance")]
     [SwaggerResponse(204, "The Attendance entry was deleted successfully.")]
     [SwaggerResponse(404, "The Attendance entry was not found.")]
     public async Task<IActionResult> DeleteAttendance(int id)
