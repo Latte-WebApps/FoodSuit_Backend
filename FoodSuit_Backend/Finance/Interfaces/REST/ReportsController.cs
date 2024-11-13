@@ -22,7 +22,8 @@ public class ReportsController (
         Summary = "Create a new report",
         Description = "Create a new report in the system",
         OperationId = "CreateReport")]
-    [SwaggerResponse(StatusCodes.Status201Created, "The report was created", typeof(ReportResource))]
+    [SwaggerResponse(201, "The report was created", typeof(ReportResource))]
+    [SwaggerResponse(400, "The report was not created")]
     public async Task<IActionResult> CreateReport([FromBody] CreateReportResource resource)
     {
         var createReportCommand = CreateReportCommandFromResourceAssembler.ToCommandFromResource(resource);
@@ -38,7 +39,8 @@ public class ReportsController (
         Summary = "Get report by id",
         Description = "Get a report by its id",
         OperationId = "GetReportById")]
-    [SwaggerResponse(StatusCodes.Status200OK, "The report was found", typeof(ReportResource))]
+    [SwaggerResponse(200, "The report was found", typeof(ReportResource))]
+    [SwaggerResponse(404, "The report was not found")]
     public async Task<IActionResult> GetReportById(int reportId)
     {
         var getReportByIdQuery = new GetReportByIdQuery(reportId);
@@ -54,7 +56,8 @@ public class ReportsController (
         Summary = "Get all reports",
         Description = "Get all reports in the system",
         OperationId = "GetAllReports")]
-    [SwaggerResponse(StatusCodes.Status200OK, "The reports were found", typeof(IEnumerable<ReportResource>))]
+    [SwaggerResponse(200, "The reports were found", typeof(IEnumerable<ReportResource>))]
+    [SwaggerResponse(404, "The reports were not found")]
     public async Task<IActionResult> GetAllReports()
     {
         var getAllReportsQuery = new GetAllReportsQuery();

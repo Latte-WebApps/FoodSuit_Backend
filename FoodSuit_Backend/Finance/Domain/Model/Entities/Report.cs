@@ -2,6 +2,13 @@ using FoodSuit_Backend.Finance.Domain.Model.ValueObjects;
 
 namespace FoodSuit_Backend.Finance.Domain.Model.Entities;
 
+/// <summary>
+/// Report Entity
+/// </summary>
+/// <remarks>
+/// This class represents a Report entity,
+/// containing the properties and methods to manage the information.
+/// </remarks>
 public class Report
 {
     public int Id { get; set; }
