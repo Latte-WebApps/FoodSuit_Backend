@@ -6,6 +6,12 @@ using FoodSuit_Backend.Shared.Domain.Repositories;
 
 namespace FoodSuit_Backend.Employees.Application.Internal.CommandServices;
 
+/// <summary>
+///This class is the service for all the commands of the Employee Endpoint, it handles Create, Update and Delete
+/// </summary>
+/// <param name="employeeRepository"></param>
+/// <param name="unitOfWork"></param>
+
 public class EmployeeCommandService(IEmployeeRepository employeeRepository, IUnitOfWork unitOfWork)
     : IEmployeeCommandService
 {

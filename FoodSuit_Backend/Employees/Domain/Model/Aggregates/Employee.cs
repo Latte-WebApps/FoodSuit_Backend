@@ -3,6 +3,9 @@ using FoodSuit_Backend.Employees.Domain.Model.ValueObjects;
 
 namespace FoodSuit_Backend.Employees.Domain.Model.Aggregates;
 
+/// <summary>
+/// This is the Aggregate class for the Employee Endpoint, it stores its attributes, and methods
+/// </summary>
 public partial  class Employee
 {
     public int Id { get; }

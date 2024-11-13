@@ -10,23 +10,27 @@ using Swashbuckle.AspNetCore.Annotations;
 
 namespace FoodSuit_Backend.Employees.Interfaces.REST;
 
-[ApiController]
-[Route("api/v1/[controller]")]
-[Produces(MediaTypeNames.Application.Json)]
-[SwaggerTag("Available Employee Endpoints.")]
+/// <summary>
+/// 
+/// </summary>
+/// <param name="employeeCommandService"></param>
+/// <param name="employeeQueryService"></param>
 
-public class EmployeeController(
+[ApiController]
+[Route("api/v1/employees")]
+[Produces(MediaTypeNames.Application.Json)]
+[SwaggerTag("Available Employees Endpoints.")]
+public class EmployeesController(
     IEmployeeCommandService employeeCommandService,
     IEmployeeQueryService employeeQueryService) : ControllerBase
 {
-    [HttpGet("{employeeId:int}")]
+    [HttpGet("{id:int}")]
     [SwaggerOperation("Get Employee by Id", "Get a profile by its unique identifier.", OperationId = "GetEmployeeById")]
     [SwaggerResponse(200, "The Employee was found and returned.", typeof(EmployeeResource))]
     [SwaggerResponse(404, "The Employee was not found.")]
-
-    public async Task<IActionResult> GetEmployeeById(int employeeId)
+    public async Task<IActionResult> GetEmployeeById(int employeesId)
     {
-        var getEmployeeByIdQuery = new GetEmployeeByIdQuery(employeeId);
+        var getEmployeeByIdQuery = new GetEmployeeByIdQuery(employeesId);
         var employee = await employeeQueryService.Handle(getEmployeeByIdQuery);
         if (employee is null) return NotFound();
         var employeeResource = EmployeeResourceFromEntityAssembler.ToResourceFromEntity(employee);
@@ -48,6 +52,7 @@ public class EmployeeController(
     }
 
     [HttpPut("{id:int}")]
+    [SwaggerOperation("Update Employee Information", "Update Employee Information", OperationId = "UpdateEmployee")]
     public async Task<IActionResult> UpdateEmployee(int id, UpdateEmployeeResource resource)
     {
         if (id <= 0 || resource is null) 
@@ -71,6 +76,7 @@ public class EmployeeController(
     }
 
     [HttpDelete("{id:int}")]
+    [SwaggerOperation("Delete Employee Information", "Delete Employee Information", OperationId = "DeleteEmployee")]
     public async Task<IActionResult> DeleteEmployee(int id)
     {
         try
