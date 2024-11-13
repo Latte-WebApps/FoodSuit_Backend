@@ -1,3 +1,8 @@
+using FoodSuit_Backend.Attendance.Application.Internal.CommandServices;
+using FoodSuit_Backend.Attendance.Application.Internal.QueryServices;
+using FoodSuit_Backend.Attendance.Domain.Repositories;
+using FoodSuit_Backend.Attendance.Domain.Services;
+using FoodSuit_Backend.Attendance.Infrastructure.Persistence.EFC.Repositories;
 using FoodSuit_Backend.Dishes.Application.Internal.CommandServices;
 using FoodSuit_Backend.Dishes.Application.Internal.QueryServices;
 using FoodSuit_Backend.Dishes.Domain.Repositories;
@@ -10,11 +15,22 @@ using FoodSuit_Backend.Orders.Domain.Repositories;
 using FoodSuit_Backend.Orders.Domain.Services;
 using FoodSuit_Backend.Orders.Infrastructure.Persistence.EFC.Repositories;
 
+
 using FoodSuit_Backend.Employees.Application.Internal.CommandServices;
 using FoodSuit_Backend.Employees.Application.Internal.QueryServices;
 using FoodSuit_Backend.Employees.Domain.Repositories;
 using FoodSuit_Backend.Employees.Domain.Services;
 using FoodSuit_Backend.Employees.Infrastructure.Persistence.EFC.Repositories;
+
+
+
+
+using FoodSuit_Backend.Shared.Domain.Repositories;
+using FoodSuit_Backend.Shared.Infrastructure.Interfaces.ASP.Configuration;
+using FoodSuit_Backend.Shared.Infrastructure.Persistence.EFC.Configuration;
+using FoodSuit_Backend.Shared.Infrastructure.Persistence.EFC.Repositories;
+using Microsoft.EntityFrameworkCore;
+
 using FoodSuit_Backend.Inventory.Application.Internal.CommandServices;
 using FoodSuit_Backend.Inventory.Application.Internal.QueryServices;
 using FoodSuit_Backend.Inventory.Domain.exceptions;
@@ -34,7 +50,6 @@ using FoodSuit_Backend.Shared.Infrastructure.Persistence.EFC.Repositories;
 using Microsoft.AspNetCore.Routing.Constraints;
 using Microsoft.EntityFrameworkCore;
 using Mysqlx.Crud;
-
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -76,6 +91,11 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
+//Attendance Bounded Context Dependency Injection Configuration
+
+builder.Services.AddScoped<IAttendanceRepository, AttendanceRepository>();
+builder.Services.AddScoped<IAttendanceCommandService, AttendanceCommandService>();
+builder.Services.AddScoped<IAttendanceQueryService, AttendanceQueryService>();
 // Dishes Bounded Context Dependency Injection Configuration
 
 builder.Services.AddScoped<IDishRepository, DishRepository>();

@@ -1,4 +1,6 @@
 using EntityFrameworkCore.CreatedUpdatedDate.Extensions;
+using FoodSuit_Backend.Attendance.Domain.Model.Aggregates;
+using EntityFrameworkCore.CreatedUpdatedDate.Extensions;
 using FoodSuit_Backend.Dishes.Domain.Model.Aggregates;
 using FoodSuit_Backend.Orders.Domain.Model.Aggregates;
 using EntityFrameworkCore.CreatedUpdatedDate.Extensions;
@@ -24,6 +26,18 @@ public class AppDbContext(DbContextOptions options) : DbContext(options)
 
 
         //Orders Context
+        
+        builder.Entity<EmployeeAttendance>().HasKey(f => f.Id);
+        builder.Entity<EmployeeAttendance>().Property(f => f.Id)
+            .IsRequired().ValueGeneratedOnAdd();
+        builder.Entity<EmployeeAttendance>().Property(f => f.EmployeeId)
+            .IsRequired();
+        builder.Entity<EmployeeAttendance>().Property(f => f.Date)
+            .IsRequired();
+        builder.Entity<EmployeeAttendance>().Property(f => f.CheckInTime)
+            .IsRequired();
+        builder.Entity<EmployeeAttendance>().Property(f => f.CheckOutTime);
+        
         
         builder.Entity<Dish>().ToTable("Dishes");
         builder.Entity<Dish>().HasKey(d => d.Id);
