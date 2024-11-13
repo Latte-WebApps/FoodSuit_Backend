@@ -17,52 +17,58 @@ namespace FoodSuit_Backend.Inventory.Interfaces.REST;
 [ApiController]
 [Route("/api/v1/[Controller]")]
 [Produces(MediaTypeNames.Application.Json)]
+[SwaggerTag("Available Product Endpoints.")]
 public class ProductsController(
     IProductCommandService productCommandService,
     IProductQueryService productQueryService) : ControllerBase
 {
     /// <summary>
-    /// Create a new item.
+    /// Create a new product.
     /// </summary>
     /// <param name="resource">The <see cref="CreateProductResource"/> resource.</param>
-    /// <returns>The created item.</returns>
+    /// <returns>The created product.</returns>
     [HttpPost]
     [SwaggerOperation(
-        Summary = "Create a new item",
-        Description = "Create a new item in the inventory",
-        OperationId = "CreateItem")]
-    [SwaggerResponse(StatusCodes.Status201Created, "The item was created", typeof(ProductResource))]
-    public async Task<IActionResult> CreateItem(CreateProductResource resource)
+        Summary = "Create a new product",
+        Description = "Create a new product in the inventory",
+        OperationId = "CreateProduct")]
+    [SwaggerResponse(StatusCodes.Status201Created, "The product was created", typeof(ProductResource))]
+    public async Task<IActionResult> CreateProduct(CreateProductResource resource)
     {
-        var createItemCommand = CreateProductCommandFromResourceAssembler.ToCommandFromResource(resource);
-        var item = await productCommandService.Handle(createItemCommand);
-        if (item is null) return BadRequest();
-        var productResource = ProductResourceFromEntityAssembler.ToResourceFromEntity(item);
-        return CreatedAtAction(nameof(GetProductById), new { id = item.Id }, productResource);
+        var createProductCommand = CreateProductCommandFromResourceAssembler.ToCommandFromResource(resource);
+        var product = await productCommandService.Handle(createProductCommand);
+        if (product is null) return BadRequest();
+        var productResource = ProductResourceFromEntityAssembler.ToResourceFromEntity(product);
+        return CreatedAtAction(nameof(GetProductById), new { id = product.Id }, productResource);
     }
 
     /// <summary>
-    /// Update an existing item.
+    /// Update an existing product.
     /// </summary>
-    /// <param name="id">The ID of the item to update.</param>
+    /// <param name="id">The ID of the product to update.</param>
     /// <param name="resource">The <see cref="UpdateProductResource"/> resource.</param>
-    /// <returns>The updated item.</returns>
+    /// <returns>The updated product.</returns>
     [HttpPut("{id:int}")]
-    public async Task<IActionResult> UpdateItem(int id, UpdateProductResource resource)
+    [SwaggerOperation(
+        Summary = "Update an existing product",
+        Description = "Update an existing product in the inventory",
+        OperationId = "UpdateProduct")]
+    [SwaggerResponse(StatusCodes.Status200OK, "The product was updated", typeof(ProductResource))]
+    public async Task<IActionResult> UpdateProduct(int id, UpdateProductResource resource)
     {
         if (id <= 0 || resource is null) 
             return BadRequest("Invalid ID or resource is null.");
 
         try
         {
-            var updateItemCommand = UpdateItemCommandFromResourceAssembler.ToCommandFromResource(resource);
-            var item = await productCommandService.Handle(id, updateItemCommand);
+            var updateProductCommand = UpdateItemCommandFromResourceAssembler.ToCommandFromResource(resource);
+            var product = await productCommandService.Handle(id, updateProductCommand);
 
-            if (item == null)
-                return NotFound($"Item not found with id: {id}");
+            if (product == null)
+                return NotFound($"Product not found with id: {id}");
 
-            var itemResource = ProductResourceFromEntityAssembler.ToResourceFromEntity(item);
-            return Ok(itemResource);
+            var productResource = ProductResourceFromEntityAssembler.ToResourceFromEntity(product);
+            return Ok(productResource);
         }
         catch (Exception ex)
         {
@@ -75,6 +81,11 @@ public class ProductsController(
     /// </summary>
     /// <returns>A list of all products.</returns>
     [HttpGet]
+    [SwaggerOperation(
+        Summary = "Get all products",
+        Description = "Get all products in the inventory",
+        OperationId = "GetAllProducts")]
+    [SwaggerResponse(StatusCodes.Status200OK, "The products were found", typeof(IEnumerable<ProductResource>))]
     public async Task<IActionResult> GetAllProducts()
     {
         var getAllProfilesQuery = new GetAllProductQuery();
@@ -89,10 +100,15 @@ public class ProductsController(
     /// <param name="id">The ID of the product to retrieve.</param>
     /// <returns>The product with the specified ID.</returns>
     [HttpGet("{id:int}")]
+    [SwaggerOperation(
+        Summary = "Get product by ID",
+        Description = "Get a product by its ID",
+        OperationId = "GetProductById")]
+    [SwaggerResponse(StatusCodes.Status200OK, "The product was found", typeof(ProductResource))]
     public async Task<IActionResult> GetProductById(int id)
     {
-        var getItemByIdQuery = new GetProductByIdQuery(id);
-        var result = await productQueryService.Handle(getItemByIdQuery);
+        var getProductByIdQuery = new GetProductByIdQuery(id);
+        var result = await productQueryService.Handle(getProductByIdQuery);
         var resource = ProductResourceFromEntityAssembler.ToResourceFromEntity(result);
         return Ok(resource);
     }
@@ -103,21 +119,27 @@ public class ProductsController(
     /// <param name="id">The ID of the product to delete.</param>
     /// <returns>A message indicating whether the deletion was successful.</returns>
     [HttpDelete("{id:int}")]
+    [SwaggerOperation(
+        Summary = "Delete a product by ID",
+        Description = "Delete a product from the inventory by its ID",
+        OperationId = "DeleteProduct")]
+    [SwaggerResponse(StatusCodes.Status200OK, "The product was deleted")]
+    [SwaggerResponse(StatusCodes.Status404NotFound, "The product was not found")]
     public async Task<IActionResult> DeleteProduct(int id)
     {
         try
         {
-            var deleteItemCommand = new DeleteProductCommand(id);
-            var itemDeleted = await productCommandService.Handle(deleteItemCommand);
+            var deleteProductCommand = new DeleteProductCommand(id);
+            var productDeleted = await productCommandService.Handle(deleteProductCommand);
 
-            if (itemDeleted is null)
-                return NotFound($"Item with id {id} not found.");
+            if (productDeleted is null)
+                return NotFound($"Product with id {id} not found.");
 
             return Ok("Product deleted successfully!");
         }
         catch (ItemNotFoundException)
         {
-            return NotFound($"Item with id {id} not found.");
+            return NotFound($"Product with id {id} not found.");
         }
         catch (Exception)
         {
