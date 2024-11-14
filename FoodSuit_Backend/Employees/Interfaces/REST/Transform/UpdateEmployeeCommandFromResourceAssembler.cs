@@ -1,4 +1,5 @@
 ﻿using FoodSuit_Backend.Employees.Domain.Model.Commands;
+using FoodSuit_Backend.Employees.Interfaces.REST.Resources;
 
 namespace FoodSuit_Backend.Employees.Interfaces.REST.Transform;
 
