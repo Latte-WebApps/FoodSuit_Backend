@@ -33,8 +33,13 @@ public class ProductsController(
         Description = "Create a new product in the inventory",
         OperationId = "CreateProduct")]
     [SwaggerResponse(StatusCodes.Status201Created, "The product was created", typeof(ProductResource))]
+    [SwaggerResponse(StatusCodes.Status400BadRequest, "Invalid request data")]
     public async Task<IActionResult> CreateProduct(CreateProductResource resource)
     {
+        if (resource == null)
+        {
+            return BadRequest("Invalid request data");
+        }
         var createProductCommand = CreateProductCommandFromResourceAssembler.ToCommandFromResource(resource);
         var product = await productCommandService.Handle(createProductCommand);
         if (product is null) return BadRequest();
@@ -54,6 +59,9 @@ public class ProductsController(
         Description = "Update an existing product in the inventory",
         OperationId = "UpdateProduct")]
     [SwaggerResponse(StatusCodes.Status200OK, "The product was updated", typeof(ProductResource))]
+    [SwaggerResponse(StatusCodes.Status400BadRequest, "Invalid ID or resource is null")]
+    [SwaggerResponse(StatusCodes.Status404NotFound, "Product not found")]
+    [SwaggerResponse(StatusCodes.Status500InternalServerError, "An error occurred")]
     public async Task<IActionResult> UpdateProduct(int id, UpdateProductResource resource)
     {
         if (id <= 0 || resource is null) 
@@ -105,10 +113,13 @@ public class ProductsController(
         Description = "Get a product by its ID",
         OperationId = "GetProductById")]
     [SwaggerResponse(StatusCodes.Status200OK, "The product was found", typeof(ProductResource))]
+    [SwaggerResponse(StatusCodes.Status404NotFound, "Product not found")]
     public async Task<IActionResult> GetProductById(int id)
     {
         var getProductByIdQuery = new GetProductByIdQuery(id);
         var result = await productQueryService.Handle(getProductByIdQuery);
+        if (result == null)
+            return NotFound($"Product with id {id} not found.");
         var resource = ProductResourceFromEntityAssembler.ToResourceFromEntity(result);
         return Ok(resource);
     }
@@ -125,6 +136,7 @@ public class ProductsController(
         OperationId = "DeleteProduct")]
     [SwaggerResponse(StatusCodes.Status200OK, "The product was deleted")]
     [SwaggerResponse(StatusCodes.Status404NotFound, "The product was not found")]
+    [SwaggerResponse(StatusCodes.Status500InternalServerError, "Internal server error")]
     public async Task<IActionResult> DeleteProduct(int id)
     {
         try
