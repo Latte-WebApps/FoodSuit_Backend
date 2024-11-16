@@ -7,6 +7,6 @@ public static class UpdateItemCommandFromResourceAssembler
 {
     public static UpdateProductCommand ToCommandFromResource(UpdateProductResource resource)
     {
-        return new UpdateProductCommand(resource.Name, resource.Quantity, resource.ImageUrl, resource.Price); 
+        return new UpdateProductCommand( resource.Id , resource.Name, resource.Quantity, resource.ImageUrl, resource.Price); 
     }
 }
