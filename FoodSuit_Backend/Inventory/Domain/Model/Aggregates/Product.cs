@@ -68,7 +68,7 @@ public class Product
             throw new ArgumentException("Quantity cannot be negative.");
 
         Name = name;
-        Quantity = 0;
+        Quantity = quantity;
         ImageUrl = image;
         Price = price;
     }

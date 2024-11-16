@@ -75,8 +75,7 @@ public class ProductsController(
             if (product == null)
                 return NotFound($"Product not found with id: {id}");
 
-            var productResource = ProductResourceFromEntityAssembler.ToResourceFromEntity(product);
-            return Ok(productResource);
+            return Ok(ProductResourceFromEntityAssembler.ToResourceFromEntity(product));
         }
         catch (Exception ex)
         {
