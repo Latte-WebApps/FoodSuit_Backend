@@ -19,6 +19,6 @@ public static class SignInCommandFromResourceAssembler
     /// </returns>
     public static SignInCommand ToCommandFromResource(SignInResource resource)
     {
-        return new SignInCommand(resource.UserName, resource.Password);
+        return new SignInCommand(resource.Username, resource.Password);
     }
 }
