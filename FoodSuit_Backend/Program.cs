@@ -43,29 +43,34 @@ using FoodSuit_Backend.Finance.Application.Internal.QueryServices;
 using FoodSuit_Backend.Finance.Domain.Repositories;
 using FoodSuit_Backend.Finance.Domain.Services;
 using FoodSuit_Backend.Finance.Infrastructure.Persistence.EFC.Repositories;
+
+using FoodSuit_Backend.IAM.Application.ACL.Services;
+using FoodSuit_Backend.IAM.Application.Internal.CommandServices;
+using FoodSuit_Backend.IAM.Application.Internal.OutboundServices;
+using FoodSuit_Backend.IAM.Application.Internal.QueryServices;
+using FoodSuit_Backend.IAM.Domain.Repositories;
+using FoodSuit_Backend.IAM.Domain.Services;
+using FoodSuit_Backend.IAM.Infrastructure.Hashing.BCrypt.Services;
+using FoodSuit_Backend.IAM.Infrastructure.Persistence.EFC.Repositories;
+using FoodSuit_Backend.IAM.Infrastructure.Pipeline.Middleware.Extensions;
+using FoodSuit_Backend.IAM.Infrastructure.Tokens.JWT.Configuration;
+using FoodSuit_Backend.IAM.Infrastructure.Tokens.JWT.Services;
+using FoodSuit_Backend.IAM.Interfaces.ACL;
+
 using FoodSuit_Backend.Shared.Domain.Repositories;
 using FoodSuit_Backend.Shared.Infrastructure.Interfaces.ASP.Configuration;
 using FoodSuit_Backend.Shared.Infrastructure.Persistence.EFC.Configuration;
 using FoodSuit_Backend.Shared.Infrastructure.Persistence.EFC.Repositories;
 using Microsoft.AspNetCore.Routing.Constraints;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
 using Mysqlx.Crud;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Configuración de restricciones de tipo en rutas
-builder.Services.Configure<RouteOptions>(options =>
-{
-    options.ConstraintMap.Add("id", typeof(IntRouteConstraint)); // Solo agrega esta línea, sin duplicar "int"
-});
-
 // Apply Route Naming Convention
 builder.Services.AddRouting(options => options.LowercaseUrls = true);
 builder.Services.AddControllers(options => options.Conventions.Add(new KebabCaseRouteNamingConvention()));
-
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(options => options.EnableAnnotations());
 
 // Add CORS Policy
 builder.Services.AddCors(options =>
@@ -93,6 +98,47 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     else if (builder.Environment.IsProduction())
         options.UseMySQL(connectionString);
 });
+
+
+// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen(options =>
+{
+    options.AddSecurityDefinition(
+        "Bearer",
+        new OpenApiSecurityScheme
+        {
+            In = ParameterLocation.Header,
+            Description = "Please enter token",
+            Name = "Authorization",
+            Type = SecuritySchemeType.Http,
+            BearerFormat = "JWT",
+            Scheme = "bearer"
+        });
+    options.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Id = "Bearer",
+                    Type = ReferenceType.SecurityScheme
+                }
+            },
+            Array.Empty<string>()
+        }
+    });
+    options.EnableAnnotations();
+});
+
+// Configuración de restricciones de tipo en rutas
+
+builder.Services.Configure<RouteOptions>(options =>
+{
+    options.ConstraintMap.Add("id", typeof(IntRouteConstraint)); // Solo agrega esta línea, sin duplicar "int"
+});
+
 
 // Configure Dependency Injection
 
@@ -134,6 +180,15 @@ builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
 builder.Services.AddScoped<IEmployeeCommandService, EmployeeCommandService>();
 builder.Services.AddScoped<IEmployeeQueryService, EmployeeQueryService>();
 
+// IAM Bounded Context Dependency Injection Configuration
+builder.Services.Configure<TokenSettings>(builder.Configuration.GetSection("TokenSettings"));
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IUserCommandService, UserCommandService>();
+builder.Services.AddScoped<IUserQueryService, UserQueryService>();
+builder.Services.AddScoped<ITokenService, TokenService>();
+builder.Services.AddScoped<IHashingService, HashingService>();
+builder.Services.AddScoped<IIamContextFacade, IamContextFacade>();
+
 var app = builder.Build();
 
 // Verify Database Objects are Created
@@ -152,8 +207,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-// Apply CORS Policy
-app.UseCors("AllowAllPolicy");
+// Add Authorization Middleware to the Pipeline
+app.UseRequestAuthorization();
 
 app.UseHttpsRedirection();
 

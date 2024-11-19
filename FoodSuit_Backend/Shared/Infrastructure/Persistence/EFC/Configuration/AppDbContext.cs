@@ -6,6 +6,7 @@ using FoodSuit_Backend.Orders.Domain.Model.Aggregates;
 using EntityFrameworkCore.CreatedUpdatedDate.Extensions;
 using FoodSuit_Backend.Inventory.Domain.Model.Aggregates;
 using FoodSuit_Backend.Finance.Domain.Model.Entities;
+using FoodSuit_Backend.IAM.Domain.Model.Aggregates;
 using FoodSuit_Backend.Shared.Infrastructure.Persistence.EFC.Configuration.Extensions;
 using Microsoft.EntityFrameworkCore;
 
@@ -82,8 +83,11 @@ public class AppDbContext(DbContextOptions options) : DbContext(options)
         builder.Entity<Report>().Property(r => r.OrdersId).IsRequired();
         builder.Entity<Report>().Property(r => r.ProductsId).IsRequired();
         
-        // TODO: Add relationships between tables
-
+        //IAM Context
+        builder.Entity<User>().HasKey(u => u.Id);
+        builder.Entity<User>().Property(u => u.Id).IsRequired().ValueGeneratedOnAdd();
+        builder.Entity<User>().Property(u => u.Username).IsRequired();
+        builder.Entity<User>().Property(u => u.PasswordHash).IsRequired();
 
         builder.UseSnakeCaseNamingConvention();
     }
