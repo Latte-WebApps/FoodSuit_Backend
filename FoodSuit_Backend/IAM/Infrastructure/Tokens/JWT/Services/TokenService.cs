@@ -22,6 +22,12 @@ public class TokenService(IOptions<TokenSettings> tokenSettings) : ITokenService
     // <inheritdoc />
     public string GenerateToken(User user)
     {
+        if (string.IsNullOrEmpty(_tokenSettings.Secret))
+            throw new Exception("Token secret is not configured.");
+        if (user == null) throw new ArgumentNullException(nameof(user), "User object cannot be null.");
+        if (user.Id == 0) throw new Exception("User ID is invalid.");
+        if (string.IsNullOrEmpty(user.Username)) throw new Exception("User username cannot be null or empty.");
+
         var secret = _tokenSettings.Secret;
         var key = Encoding.ASCII.GetBytes(secret);
         var tokenDescriptor = new SecurityTokenDescriptor
