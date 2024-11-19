@@ -207,9 +207,6 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-// Apply CORS Policy
-app.UseCors("AllowAllPolicy");
-
 // Add Authorization Middleware to the Pipeline
 app.UseRequestAuthorization();
 

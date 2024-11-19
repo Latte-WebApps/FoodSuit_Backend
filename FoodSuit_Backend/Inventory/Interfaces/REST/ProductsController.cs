@@ -62,7 +62,7 @@ public class ProductsController(
     [SwaggerResponse(StatusCodes.Status400BadRequest, "Invalid ID or resource is null")]
     [SwaggerResponse(StatusCodes.Status404NotFound, "Product not found")]
     [SwaggerResponse(StatusCodes.Status500InternalServerError, "An error occurred")]
-    public async Task<IActionResult> UpdateProduct(int id, UpdateProductResource resource)
+    public async Task<IActionResult> UpdateProduct(int id,[FromBody] UpdateProductResource resource)
     {
         if (id <= 0 || resource is null) 
             return BadRequest("Invalid ID or resource is null.");
@@ -75,8 +75,7 @@ public class ProductsController(
             if (product == null)
                 return NotFound($"Product not found with id: {id}");
 
-            var productResource = ProductResourceFromEntityAssembler.ToResourceFromEntity(product);
-            return Ok(productResource);
+            return Ok(ProductResourceFromEntityAssembler.ToResourceFromEntity(product));
         }
         catch (Exception ex)
         {

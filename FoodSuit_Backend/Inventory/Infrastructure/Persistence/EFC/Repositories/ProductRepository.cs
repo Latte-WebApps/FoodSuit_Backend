@@ -20,9 +20,9 @@ public class ProductRepository(AppDbContext context) : BaseRepository<Product>(c
         return await Context.Set<Product>().Where(i => i.Name == name).ToListAsync();
     }
 
-    public async Task UpdateAsync(Product item)
+    public async Task UpdateAsync(Product product)
     {
-        Context.Set<Product>().Update(item);
+        Context.Set<Product>().Update(product);
         await Context.SaveChangesAsync();
     }
 

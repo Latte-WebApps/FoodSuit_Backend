@@ -22,7 +22,7 @@ public class Product
     protected Product()
     {
         this.Name = string.Empty;
-        this.Quantity = 0;
+        this.Quantity = 0 ;
         this.ImageUrl = string.Empty;
         this.Price = 0;
     }
@@ -40,7 +40,7 @@ public class Product
     public Product(CreateProductCommand command)
     {
         this.Name = command.Name;
-        this.Quantity = 0;
+        this.Quantity = command.Quantity;
         this.ImageUrl = command.Image;
         this.Price = command.Price;
     }
@@ -54,7 +54,7 @@ public class Product
     public Product(UpdateProductCommand command)
     {
         this.Name = command.Name;
-        this.Quantity = 0;
+        this.Quantity = command.Quantity;
         this.ImageUrl = command.ImageUrl;
         this.Price = command.Price;
     }
@@ -68,7 +68,7 @@ public class Product
             throw new ArgumentException("Quantity cannot be negative.");
 
         Name = name;
-        Quantity = 0;
+        Quantity = quantity;
         ImageUrl = image;
         Price = price;
     }
