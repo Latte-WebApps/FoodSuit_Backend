@@ -1,3 +1,5 @@
-﻿namespace FoodSuit_Backend.Dishes.Domain.Model.Commands;
+﻿using FoodSuit_Backend.Dishes.Domain.Model.Entities;
 
-public record CreateDishCommand(string Name, string Price, string Category);
+namespace FoodSuit_Backend.Dishes.Domain.Model.Commands;
+
+public record CreateDishCommand(string Name, string Price, string Category, string Instruction, List<Products> Products);

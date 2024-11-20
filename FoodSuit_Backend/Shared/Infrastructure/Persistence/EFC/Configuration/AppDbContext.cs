@@ -46,6 +46,9 @@ public class AppDbContext(DbContextOptions options) : DbContext(options)
         builder.Entity<Dish>().Property(d => d.Name).IsRequired();
         builder.Entity<Dish>().Property(d=>d.Category).IsRequired();
         builder.Entity<Dish>().Property(d=>d.Price).IsRequired();
+        builder.Entity<Dish>().Property(d=>d.Instruction).IsRequired();
+        builder.Entity<Dish>().Property(d=>d.Products).IsRequired();
+        
         
         
         builder.Entity<Order>().ToTable("Orders");

@@ -10,6 +10,8 @@ public class CreateDishCommandFromResourceAssembler
         return new CreateDishCommand(
             resource.Name,
             resource.Price,
-            resource.Category);
+            resource.Category,
+            resource.Instruction,
+            resource.Products);
     }
 }

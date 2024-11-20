@@ -1,3 +1,8 @@
-﻿namespace FoodSuit_Backend.Dishes.Interfaces.REST.Resources;
+﻿using FoodSuit_Backend.Dishes.Domain.Model.Entities;
 
-public record CreateDishResource(string Name, string Price, string Category);
+namespace FoodSuit_Backend.Dishes.Interfaces.REST.Resources;
+
+public record CreateDishResource(string Name, string Price, string Category, string Instruction)
+{
+    public List<Products> Products { get; set; }
+}
