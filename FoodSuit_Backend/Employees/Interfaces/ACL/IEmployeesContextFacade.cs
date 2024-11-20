@@ -1,6 +1,7 @@
-﻿namespace FoodSuit_Backend.Employees.Interfaces.ACL;
-
-public interface IEmployeesContextFacade
+﻿namespace FoodSuit_Backend.Employees.Interfaces.ACL
 {
-    Task<int>CreateEmployee(string firstName, string lastName, int entryHour, int entryMinute, int exitHour, int exitMinute);
+    public interface IEmployeesContextFacade
+    {
+        Task<int> CreateEmployee(string firstName, string lastName, string entryTime, string exitTime);
+    }
 }

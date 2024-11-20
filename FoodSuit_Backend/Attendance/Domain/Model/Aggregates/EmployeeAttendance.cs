@@ -1,28 +1,32 @@
 ﻿using FoodSuit_Backend.Attendance.Domain.Model.Commands;
-using FoodSuit_Backend.Attendance.Domain.Model.ValueObjects;
 
 namespace FoodSuit_Backend.Attendance.Domain.Model.Aggregates;
 
 /// <summary>
-/// This class represents the Attendance aggregate. It is used to store the attendance record of an employee.
+/// Represents the Attendance aggregate. It is used to store the attendance record of an employee.
 /// </summary>
 public partial class EmployeeAttendance
 {
-    public int Id { get; }
-    public int EmployeeId { get; private set; }
-    public DateTime Date { get; private set; }
-    public DateTime CheckInTime { get; private set; }
-    public DateTime CheckOutTime { get; private set; }
+    public int Id { get; private set; } // Unique identifier
+    public int EmployeeId { get; private set; } // Employee ID
+    public string Date { get; private set; } // Date in dd/MM/yyyy format
+    public string CheckInTime { get; private set; } // Check-in time in HH:mm format
+    public string? CheckOutTime { get; private set; } // Check-out time in HH:mm format (optional)
 
-    // Constructor sin parámetros para flexibilidad
+    /// <summary>
+    /// Default constructor for flexibility.
+    /// </summary>
     public EmployeeAttendance()
     {
-        Date = DateTime.MinValue;
-        CheckInTime = DateTime.MinValue;
-        CheckOutTime = DateTime.MinValue;
+        Date = string.Empty;
+        CheckInTime = string.Empty;
+        CheckOutTime = null;
     }
 
-    // Constructor con comando para registro inicial de asistencia
+    /// <summary>
+    /// Constructor to create a new attendance record using RegisterAttendanceCommand.
+    /// </summary>
+    /// <param name="command">The command containing the attendance details.</param>
     public EmployeeAttendance(RegisterAttendanceCommand command)
     {
         EmployeeId = command.EmployeeId;
@@ -31,25 +35,43 @@ public partial class EmployeeAttendance
         CheckOutTime = command.CheckOutTime;
     }
 
-    // Método de actualización para modificar el registro de asistencia
-    public void UpdateAttendance(DateTime checkInTime, DateTime checkOutTime)
-    {
-        CheckInTime = checkInTime;
-        CheckOutTime = checkOutTime;
-    }
+    /// <summary>
+    /// Constructor to update check-out time using UpdateCheckOutCommand.
+    /// </summary>
+    /// <param name="command">The command containing the updated check-out time.</param>
     public EmployeeAttendance(UpdateCheckOutCommand command)
     {
         EmployeeId = command.EmployeeId;
         CheckOutTime = command.CheckOutTime;
     }
 
-    public void UpdateCheckOutTime(DateTime checkOutTime)
+    /// <summary>
+    /// Updates the check-out time for the attendance record.
+    /// </summary>
+    /// <param name="checkOutTime">The new check-out time in HH:mm format.</param>
+    public void UpdateCheckOutTime(string checkOutTime)
     {
+        if (string.IsNullOrWhiteSpace(checkOutTime))
+            throw new ArgumentException("CheckOutTime cannot be null or empty.");
+
         CheckOutTime = checkOutTime;
     }
 
+    /// <summary>
+    /// Calculates the total hours worked using CheckInTime and CheckOutTime.
+    /// </summary>
+    /// <returns>Total hours worked as a double.</returns>
     public double CalculateHoursWorked()
     {
-        return (CheckOutTime - CheckInTime).TotalHours;
+        if (string.IsNullOrWhiteSpace(CheckInTime) || string.IsNullOrWhiteSpace(CheckOutTime))
+            throw new InvalidOperationException("Both CheckInTime and CheckOutTime must be set to calculate hours worked.");
+
+        var checkIn = TimeSpan.Parse(CheckInTime);
+        var checkOut = TimeSpan.Parse(CheckOutTime);
+
+        if (checkOut < checkIn)
+            throw new InvalidOperationException("CheckOutTime cannot be earlier than CheckInTime.");
+
+        return (checkOut - checkIn).TotalHours;
     }
 }

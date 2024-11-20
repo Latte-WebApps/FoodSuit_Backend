@@ -8,20 +8,25 @@ namespace FoodSuit_Backend.Attendance.Infrastructure.Persistence.EFC.Repositorie
 
 public class AttendanceRepository(AppDbContext context) : BaseRepository<EmployeeAttendance>(context), IAttendanceRepository
 {
-    public async Task<IEnumerable<EmployeeAttendance>> FindByEmployeeIdAsync(int employeeId, DateTime? startDate = null, DateTime? endDate = null)
+    public async Task<IEnumerable<EmployeeAttendance>> FindByEmployeeIdAsync(int employeeId, string? startDate = null, string? endDate = null)
     {
         var query = Context.Set<EmployeeAttendance>().Where(a => a.EmployeeId == employeeId);
 
-        if (startDate.HasValue)
-            query = query.Where(a => a.Date >= startDate.Value);
-        
-        if (endDate.HasValue)
-            query = query.Where(a => a.Date <= endDate.Value);
+        // Filtrar por rango de fechas si se proporciona
+        if (!string.IsNullOrEmpty(startDate))
+        {
+            query = query.Where(a => string.Compare(a.Date, startDate) >= 0);
+        }
+
+        if (!string.IsNullOrEmpty(endDate))
+        {
+            query = query.Where(a => string.Compare(a.Date, endDate) <= 0);
+        }
 
         return await query.ToListAsync();
     }
 
-    public async Task<IEnumerable<EmployeeAttendance>> FindByDateAsync(DateTime date)
+    public async Task<IEnumerable<EmployeeAttendance>> FindByDateAsync(string date)
     {
         return await Context.Set<EmployeeAttendance>()
             .Where(a => a.Date == date)

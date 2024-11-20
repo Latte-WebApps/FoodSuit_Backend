@@ -4,6 +4,7 @@ using EntityFrameworkCore.CreatedUpdatedDate.Extensions;
 using FoodSuit_Backend.Dishes.Domain.Model.Aggregates;
 using FoodSuit_Backend.Orders.Domain.Model.Aggregates;
 using EntityFrameworkCore.CreatedUpdatedDate.Extensions;
+using FoodSuit_Backend.Employees.Domain.Model.Aggregates;
 using FoodSuit_Backend.Inventory.Domain.Model.Aggregates;
 using FoodSuit_Backend.Finance.Domain.Model.Entities;
 using FoodSuit_Backend.IAM.Domain.Model.Aggregates;
@@ -25,9 +26,24 @@ public class AppDbContext(DbContextOptions options) : DbContext(options)
     {
         base.OnModelCreating(builder);
 
-
-        //Orders Context
         
+        //Employee Context
+        
+        builder.Entity<Employee>().ToTable("Employees");
+        builder.Entity<Employee>().HasKey(e => e.Id);
+        builder.Entity<Employee>().Property(e => e.Id).IsRequired().ValueGeneratedOnAdd();
+        builder.Entity<Employee>().Property(e => e.FirstName).IsRequired();
+        builder.Entity<Employee>().Property(e => e.LastName).IsRequired();
+        builder.Entity<Employee>().Property(e => e.EntryTime)
+            .IsRequired()
+            .HasMaxLength(5); // Para formato "HH:mm"
+        builder.Entity<Employee>().Property(e => e.ExitTime)
+            .IsRequired()
+            .HasMaxLength(5); // Para formato "HH:mm"
+        
+        //Attendance Context
+
+        builder.Entity<EmployeeAttendance>().ToTable("Attendances");
         builder.Entity<EmployeeAttendance>().HasKey(f => f.Id);
         builder.Entity<EmployeeAttendance>().Property(f => f.Id)
             .IsRequired().ValueGeneratedOnAdd();
@@ -38,8 +54,10 @@ public class AppDbContext(DbContextOptions options) : DbContext(options)
         builder.Entity<EmployeeAttendance>().Property(f => f.CheckInTime)
             .IsRequired();
         builder.Entity<EmployeeAttendance>().Property(f => f.CheckOutTime);
+
         
-        
+        //Orders Context
+      
         builder.Entity<Dish>().ToTable("Dishes");
         builder.Entity<Dish>().HasKey(d => d.Id);
         builder.Entity<Dish>().Property(d => d.Id).IsRequired().ValueGeneratedOnAdd();

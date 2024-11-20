@@ -6,6 +6,6 @@
 /// </summary>
 public record RegisterAttendanceCommand(
     int EmployeeId,
-    DateTime Date,
-    DateTime CheckInTime,
-    DateTime CheckOutTime);
+    string Date,
+    string CheckInTime,
+    string CheckOutTime);

@@ -2,15 +2,15 @@
 using FoodSuit_Backend.Employees.Domain.Services;
 using FoodSuit_Backend.Employees.Interfaces.ACL;
 
-namespace FoodSuit_Backend.Employees.Application.ACL;
-
-public class EmployeesContextFacade(IEmployeeCommandService employeeCommandService, IEmployeeQueryService employeeQueryService) : IEmployeesContextFacade
+namespace FoodSuit_Backend.Employees.Application.ACL
 {
-    public async Task<int> CreateEmployee(string firstName, string lastName, int entryHour, int entryMinute, int exitHour, int exitMinute)
+    public class EmployeesContextFacade(IEmployeeCommandService employeeCommandService, IEmployeeQueryService employeeQueryService) : IEmployeesContextFacade
     {
-        var createEmployeeCommand = new CreateEmployeeCommand(firstName, lastName, entryHour, entryMinute, exitHour, exitMinute);
-        var employee = await employeeCommandService.Handle(createEmployeeCommand);
-        return employee?.Id ?? 0;
+        public async Task<int> CreateEmployee(string firstName, string lastName, string entryTime, string exitTime)
+        {
+            var createEmployeeCommand = new CreateEmployeeCommand(firstName, lastName, entryTime, exitTime);
+            var employee = await employeeCommandService.Handle(createEmployeeCommand);
+            return employee?.Id ?? 0;
+        }
     }
-    
 }
