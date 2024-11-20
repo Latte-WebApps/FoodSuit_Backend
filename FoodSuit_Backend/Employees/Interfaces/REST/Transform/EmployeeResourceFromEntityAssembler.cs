@@ -1,13 +1,13 @@
 ﻿using FoodSuit_Backend.Employees.Domain.Model.Aggregates;
 using FoodSuit_Backend.Employees.Interfaces.REST.Resources;
 
-namespace FoodSuit_Backend.Employees.Interfaces.REST.Transform;
-
-public class EmployeeResourceFromEntityAssembler
+namespace FoodSuit_Backend.Employees.Interfaces.REST.Transform
 {
-    public static EmployeeResource ToResourceFromEntity(Employee entity)
+    public class EmployeeResourceFromEntityAssembler
     {
-        return new EmployeeResource(entity.Id, entity.EmployeeNameString, entity.EntryTimeString,
-            entity.ExitTimeString);
+        public static EmployeeResource ToResourceFromEntity(Employee entity)
+        {
+            return new EmployeeResource(entity.Id, entity.FullName, entity.EntryTime, entity.ExitTime);
+        }
     }
 }

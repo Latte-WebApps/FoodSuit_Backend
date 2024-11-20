@@ -7,14 +7,7 @@ using FoodSuit_Backend.Employees.Interfaces.REST.Transform;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 
-
 namespace FoodSuit_Backend.Employees.Interfaces.REST;
-
-/// <summary>
-/// 
-/// </summary>
-/// <param name="employeeCommandService"></param>
-/// <param name="employeeQueryService"></param>
 
 [ApiController]
 [Route("api/v1/employees")]
@@ -24,7 +17,7 @@ public class EmployeesController(
     IEmployeeCommandService employeeCommandService,
     IEmployeeQueryService employeeQueryService) : ControllerBase
 {
-    [HttpGet("{id:int}")]
+    [HttpGet("{employeesId:int}")]
     [SwaggerOperation("Get Employee by Id", "Get a profile by its unique identifier.", OperationId = "GetEmployeeById")]
     [SwaggerResponse(200, "The Employee was found and returned.", typeof(EmployeeResource))]
     [SwaggerResponse(404, "The Employee was not found.")]
@@ -39,16 +32,15 @@ public class EmployeesController(
 
     [HttpPost]
     [SwaggerOperation("Create Employee", "Create a new Employee.", OperationId = "CreateEmployee")]
-    [SwaggerResponse(200, "The Employee was found and returned.", typeof(EmployeeResource))]
-    [SwaggerResponse(404, "The Employee was not found.")]
-
+    [SwaggerResponse(201, "The Employee was created successfully.", typeof(EmployeeResource))]
+    [SwaggerResponse(400, "The Employee was not created.")]
     public async Task<IActionResult> CreateEmployee(CreateEmployeeResource resource)
     {
         var createEmployeeCommand = CreateEmployeeCommandFromResourceAssembler.ToCommandFromResource(resource);
         var employee = await employeeCommandService.Handle(createEmployeeCommand);
         if (employee is null) return BadRequest();
         var employeeResource = EmployeeResourceFromEntityAssembler.ToResourceFromEntity(employee);
-        return CreatedAtAction(nameof(GetEmployeeById), new { profileId = employee.Id }, employeeResource);
+        return CreatedAtAction(nameof(GetEmployeeById), new { employeesId = employee.Id }, employeeResource);
     }
 
     [HttpPut("{id:int}")]
@@ -68,7 +60,6 @@ public class EmployeesController(
             var employeeResource = EmployeeResourceFromEntityAssembler.ToResourceFromEntity(employee);
             return Ok(employeeResource);
         }
-        
         catch (Exception ex)
         {
             return StatusCode(500, $"An error occurred: {ex.Message}");
@@ -95,4 +86,4 @@ public class EmployeesController(
             throw;
         }
     }
-}
+} 

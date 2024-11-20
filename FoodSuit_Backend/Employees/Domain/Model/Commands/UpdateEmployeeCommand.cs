@@ -3,7 +3,6 @@
 public record UpdateEmployeeCommand(
     string FirstName, 
     string LastName, 
-    int EntryHour, 
-    int EntryMinute, 
-    int ExitHour, 
-    int ExitMinute);
+    string EntryTime,  // Cambiado a string
+    string ExitTime    // Cambiado a string
+);

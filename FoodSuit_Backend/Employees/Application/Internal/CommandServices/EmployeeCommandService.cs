@@ -17,7 +17,7 @@ public class EmployeeCommandService(IEmployeeRepository employeeRepository, IUni
 {
     public async Task<Employee?> Handle(CreateEmployeeCommand command)
     {
-        var employee = new Employee(command);
+        var employee = new Employee(command.FirstName, command.LastName, command.EntryTime, command.ExitTime);
         try
         {
             await employeeRepository.AddAsync(employee);
@@ -26,7 +26,7 @@ public class EmployeeCommandService(IEmployeeRepository employeeRepository, IUni
         }
         catch (Exception ex)
         {
-            return null;
+            throw new Exception("Error creating employee", ex);
         }
     }
 
@@ -42,10 +42,8 @@ public class EmployeeCommandService(IEmployeeRepository employeeRepository, IUni
         employee.UpdateEmployee(
             command.FirstName,
             command.LastName,
-            command.EntryHour,
-            command.EntryMinute,
-            command.ExitHour,
-            command.ExitMinute
+            command.EntryTime,
+            command.ExitTime
         );
         try
         {
@@ -59,6 +57,7 @@ public class EmployeeCommandService(IEmployeeRepository employeeRepository, IUni
             throw new Exception("Error updating employee", ex);
         }
     }
+
 
     public async Task<bool?> Handle(DeleteEmployeeCommand command)
     {
