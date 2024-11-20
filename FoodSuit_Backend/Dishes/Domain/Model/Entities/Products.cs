@@ -12,4 +12,9 @@ public class Products
         Name = name;
         Quantity = quantity;
     }
+
+    public Products(int id)
+    {
+    }
+
 }
