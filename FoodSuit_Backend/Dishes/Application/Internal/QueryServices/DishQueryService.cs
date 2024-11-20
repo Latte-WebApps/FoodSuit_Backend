@@ -13,6 +13,11 @@ public class DishQueryService(IDishRepository dishRepository) : IDishQueryServic
        
     }
 
+    public async Task<IEnumerable<Dish>> Handle(GetAllDishesQuery query)
+    {
+        return await dishRepository.ListAsync();
+    }
+
     public async Task<IEnumerable<Dish>> Handle(GetAllDishesByCategoryQuery query)
     {
         return await dishRepository.FindByCategoryAsync(query.Category);

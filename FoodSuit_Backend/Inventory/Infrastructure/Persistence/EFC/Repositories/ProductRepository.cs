@@ -36,4 +36,9 @@ public class ProductRepository(AppDbContext context) : BaseRepository<Product>(c
         var quantityValue = new Quantity(quantity);
         return await Context.Set<Product>().AnyAsync(q => q.Id == id && q.Quantity == quantity);
     }
+
+    public Task<Product?> FindProductByNameAsync(string name)
+    {
+        return Context.Set<Product>().Where(p =>p.Name == name).FirstOrDefaultAsync();
+    }
 }

@@ -63,6 +63,27 @@ public class DishesController(
         var resource = DishResourceFromEntityAssembler.ToResourceFromEntity(result);
         return Ok(resource);
     }
+    
+    /// <summary>
+    /// Get all dishes.
+    /// </summary>
+    /// <returns>
+    /// A list of all dishes in the system.
+    /// </returns>
+    [HttpGet]
+    [SwaggerOperation(
+        Summary = "Get all dishes", 
+        Description = "Get all dishes in the system", 
+        OperationId = "GetAllDishes")]
+    [SwaggerResponse(200, "The dishes were found", typeof(IEnumerable<DishResource>))]
+    [SwaggerResponse(404, "No dishes were found")]
+    public async Task<IActionResult> GetAllDishes()
+    {
+        var getAllDishesQuery = new GetAllDishesQuery();
+        var dishes = await dishQueryService.Handle(getAllDishesQuery);
+        var dishResources = dishes.Select(DishResourceFromEntityAssembler.ToResourceFromEntity);
+        return Ok(dishResources);
+    }
 
     /// <summary>
     /// Get all dishes by category.

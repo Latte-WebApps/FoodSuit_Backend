@@ -7,5 +7,5 @@ public interface IProductQueryService
 {
     Task<Product?> Handle(GetProductByIdQuery query);
     Task<IEnumerable<Product>> Handle(GetAllProductQuery query);
-
+    Task<Product?> Handle(GetProductByNameQuery query);
 }
