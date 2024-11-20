@@ -3,7 +3,7 @@
 public record AttendanceResource(
     int Id,
     int EmployeeId,
-    DateTime Date,
-    DateTime CheckInTime,
-    DateTime? CheckOutTime
+    string Date,
+    string CheckInTime,
+    string? CheckOutTime
 );

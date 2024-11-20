@@ -7,7 +7,7 @@ namespace FoodSuit_Backend.Employees.Interfaces.REST.Transform
     {
         public static EmployeeResource ToResourceFromEntity(Employee entity)
         {
-            return new EmployeeResource(entity.Id, entity.FullName, entity.EntryTime, entity.ExitTime);
+            return new EmployeeResource(entity.Id, entity.FirstName, entity.LastName, entity.EntryTime, entity.ExitTime);
         }
     }
 }
