@@ -17,6 +17,23 @@ public class EmployeesController(
     IEmployeeCommandService employeeCommandService,
     IEmployeeQueryService employeeQueryService) : ControllerBase
 {
+    [HttpGet]
+    [SwaggerOperation("Get All Employees", "Get a list of all employees.", OperationId = "GetAllEmployees")]
+    [SwaggerResponse(200, "The list of Employees was found and returned.", typeof(IEnumerable<EmployeeResource>))]
+    public async Task<IActionResult> GetAllEmployees()
+    {
+        var getAllEmployeesQuery = new GetAllEmployeesQuery();
+        var employees = await employeeQueryService.Handle(getAllEmployeesQuery);
+
+        if (employees == null || !employees.Any())
+        {
+            return NotFound("No employees found.");
+        }
+
+        var employeeResources = employees.Select(EmployeeResourceFromEntityAssembler.ToResourceFromEntity);
+        return Ok(employeeResources);
+    }
+    
     [HttpGet("{employeesId:int}")]
     [SwaggerOperation("Get Employee by Id", "Get a profile by its unique identifier.", OperationId = "GetEmployeeById")]
     [SwaggerResponse(200, "The Employee was found and returned.", typeof(EmployeeResource))]
