@@ -1,4 +1,4 @@
 ﻿namespace FoodSuit_Backend.Employees.Interfaces.REST.Resources;
 
-public record EmployeeResource(int Id, string FullName, string EntryTime, string ExitTime);
+public record EmployeeResource(int Id, string FirstName, string LastName, string EntryTime, string ExitTime);
 
