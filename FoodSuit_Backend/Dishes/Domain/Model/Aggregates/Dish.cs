@@ -1,5 +1,5 @@
 ﻿using FoodSuit_Backend.Dishes.Domain.Model.Commands;
-using FoodSuit_Backend.Dishes.Domain.Model.Entities;
+using FoodSuit_Backend.Dishes.Domain.Model.ValueObjects;
 
 namespace FoodSuit_Backend.Dishes.Domain.Model.Aggregates;
 
@@ -14,7 +14,7 @@ public partial class Dish
     public string Category { get; private set; }
     public string Instruction { get; private set; }
     
-    public List<Products> Products { get; private set; }
+    public List<ProductId> ProductId { get; private set; }
 
 
     protected Dish()
@@ -23,7 +23,7 @@ public partial class Dish
         Category = string.Empty;
         Price = string.Empty;
         Instruction = string.Empty;
-        Products = new List<Products>();
+        ProductId = new List<ProductId>();
     }
     
     public Dish(CreateDishCommand command)
@@ -32,6 +32,6 @@ public partial class Dish
         Category = command.Category;
         Price = command.Price;
         Instruction = command.Instruction;
-        Products = command.Products;
+        ProductId = command.ProductId;
     }
 }

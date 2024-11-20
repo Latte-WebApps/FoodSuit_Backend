@@ -13,6 +13,6 @@ public class DishResourceFromEntityAssembler
             entity.Price,
             entity.Category,
             entity.Instruction,
-            entity.Products);
+            entity.ProductId);
     }
 }

@@ -44,9 +44,9 @@ protected override void OnModelCreating(ModelBuilder builder)
     builder.Entity<Dish>().Property(d => d.Category).IsRequired();
     builder.Entity<Dish>().Property(d => d.Price).IsRequired();
     builder.Entity<Dish>().Property(d => d.Instruction).IsRequired();
-    builder.Entity<Dish>().HasMany(d => d.Products).WithOne().HasForeignKey(p => p.Id);
+    builder.Entity<Dish>().HasMany(d => d.ProductId).WithMany().UsingEntity(j => j.ToTable("DishProducts"));
 
-    builder.Entity<Product>().ToTable("Ingredients");
+    builder.Entity<Product>().ToTable("Products");
     builder.Entity<Product>().HasKey(f => f.Id);
     builder.Entity<Product>().Property(f => f.Id)
         .IsRequired().ValueGeneratedOnAdd();

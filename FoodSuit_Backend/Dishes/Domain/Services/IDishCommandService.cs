@@ -5,7 +5,7 @@ namespace FoodSuit_Backend.Dishes.Domain.Services;
 
 public interface IDishCommandService
 {
-    Task<Dish?> Handle(int command);
+    Task<Dish?> Handle(int dishId);
     Task<Dish> Handle(CreateDishCommand createDishCommand);
     Task<bool> DeleteDishByIdAsync(DeleteDishCommand command);
 }

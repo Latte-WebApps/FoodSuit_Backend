@@ -12,6 +12,6 @@ public class CreateDishCommandFromResourceAssembler
             resource.Price,
             resource.Category,
             resource.Instruction,
-            resource.Products);
+            resource.ProductId);
     }
 }
