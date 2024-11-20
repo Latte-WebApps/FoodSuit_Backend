@@ -10,5 +10,5 @@ public interface IProductRepository: IBaseRepository<Product>
     Task UpdateAsync(Product product );
     Task<IEnumerable<Product>?> FindAllAsync();
     Task<bool> ExistsByIdAndQuantityAsync(int id, int quantity);
-
+    Task<Product?> FindProductByNameAsync(string name);
 }
