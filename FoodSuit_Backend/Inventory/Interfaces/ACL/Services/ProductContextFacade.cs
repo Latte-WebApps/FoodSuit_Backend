@@ -3,7 +3,7 @@ using FoodSuit_Backend.Inventory.Domain.Services;
 
 namespace FoodSuit_Backend.Inventory.Interfaces.ACL.Services;
 
-public class ProductContextFacade(IProductCommandService productCommandService, IProductQueryService productQueryService): IProductContextFacade
+public class ProductContextFacade(IProductQueryService productQueryService): IProductContextFacade
 {
     public  async Task<int> FetchProductIdByName(string name)
     {

@@ -1,19 +1,15 @@
-﻿namespace FoodSuit_Backend.Dishes.Application.Internal.OutboundServices.ACL;
+﻿using FoodSuit_Backend.Inventory.Domain.Model.Aggregates;
+using FoodSuit_Backend.Inventory.Interfaces.ACL.Services;
 
-public class ExternalProductService
+namespace FoodSuit_Backend.Dishes.Application.Internal.OutboundServices.ACL;
+
+public class ExternalProductService(ProductContextFacade productContextFacade)
 {
-    public async Task<ProductId?> FetchProductIdByName(string name)
+    
+    public async Task<int> FetchProductIdByName(string name)
     {
-        // Fetch product id from external service
-        var productId = await productsContextFacade.FetchProductIdByName(name);
-        if (productId == 0) return await Task.FromResult<ProductId?>(null);
-        return new ProductId(productId);
-    }
-
-    public async Task<ProductId?> CreateProduct(string name)
-    {
-        var productId = await productsContextFacade.CreateProduct(name);
-        if (productId == 0) return await Task.FromResult<ProductId?>(null);
-        return new ProductId(productId);
+        var product = await productContextFacade.FetchProductIdByName(name);
+        if (product == 0) return await Task.FromResult<Product?>(null);
+        return new Product(productId);
     }
 }
