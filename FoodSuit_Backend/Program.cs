@@ -210,6 +210,7 @@ if (app.Environment.IsDevelopment())
 // Add Authorization Middleware to the Pipeline
 
 app.UseCors("AllowAllPolicy");
+
 app.UseRequestAuthorization();
 
 app.UseHttpsRedirection();

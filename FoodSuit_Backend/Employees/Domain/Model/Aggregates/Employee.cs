@@ -14,7 +14,6 @@ public partial class Employee
     public string EntryTime { get; private set; } = string.Empty; // Formato "HH:mm"
     public string ExitTime { get; private set; } = string.Empty;  // Formato "HH:mm"
 
-    public string FullName => $"{FirstName} {LastName}";
 
     public Employee() {}
 
